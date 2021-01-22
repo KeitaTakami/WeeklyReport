@@ -1,0 +1,132 @@
+%\documentstyle[epsf,twocolumn]{jarticle}       %LaTeX2.09仕様
+\documentclass[twocolumn,a4paper,dvipdfmx]{ujarticle}     %pLaTeX2e仕様
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%%  基本 バージョン
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setlength{\topmargin}{-45pt}
+%\setlength{\oddsidemargin}{0cm} 
+\setlength{\oddsidemargin}{-7.5mm}
+%\setlength{\evensidemargin}{0cm} 
+\setlength{\textheight}{24.1cm}
+%setlength{\textheight}{25cm} 
+\setlength{\textwidth}{17.4cm}
+%\setlength{\textwidth}{172mm} 
+\setlength{\columnsep}{11mm}
+
+\kanjiskip=.07zw plus.5pt minus.5pt
+
+
+%【節がかわるごとに(1.1)(1.2) …(2.1)(2.2)と数式番号をつけるとき】
+%\makeatletter
+%\renewcommand{\theequation}{%
+%\thesection.\arabic{equation}} %\@addtoreset{equation}{section}
+%\makeatother
+
+%\renewcommand{\arraystretch}{0.95} 行間の設定
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[dvipdfm]{graphicx}   %pLaTeX2e仕様(要\documentstyle ->\documentclass)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+\usepackage{grffile}
+\usepackage{comment}
+\usepackage{here} 
+\usepackage{csvsimple}
+\usepackage{float}
+
+\begin{document}
+
+\twocolumn[
+\noindent
+\hspace{1em}
+
+2021年1月22日（金）ゼミ資料
+\hfill
+\ \ M1 高見啓太
+
+\vspace{2mm}
+\hrule
+\begin{center}
+{\Large \bf 進捗報告}
+\end{center}
+\hrule
+\vspace{3mm}
+]
+
+\section{今週行ったこと}
+\begin{itemize}
+	
+	\item VGG16のモデルを転移学習させて,猫に耳カットがあるか否かの識別を行った．
+	\section{耳カットの実験}
+	VGG16を転移学習させて，猫の耳カットを識別させるモデルを作った．表\ref{tab:mimicut}にモデルのパラメータを示す．クラスとしては，耳カットなし，あり，不明の3クラスとなる．画像の中から一番少ないnoncutのデータ枚数に合わせて実験を行った．また，バッチサイズは16とした．図\ref{cutaccuracy},図\ref{cutloss}に各クラス39枚の時のaccuracy,lossを，図\ref{cutaccuracy2},図\ref{cutloss2}に各クラス110枚の時のaccuracy,lossをそれぞれ示す．
+\end{itemize}
+\begin{table}[htb]
+	\begin{center}
+		
+		\caption{耳カット識別のモデル\label{tab:mimicut}}
+		\begin{tabular}{|c|c|} \hline
+			クラス & 3クラス分類 \\ \hline \hline
+			訓練データ数　& 各クラス39枚/110枚\\
+			input & image(224×224×3) \\
+			output & class(3)　\\
+			ベースモデル & VGG16 \\
+			optimizer & adam \\
+			学習率　& 0.001\\
+			損失関数 & categorical\_crossentropy\\ 
+			train:validation & 2:1\\
+			初期重み & ImageNet \\
+			batch\_size & 16 \\
+			epochs & 30 \\ \hline
+		\end{tabular}
+	\end{center}
+\end{table}
+
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=7cm]{2021_01_15_cat_earcut_accuracy_batchsize_16_adam_lr0.001.png}
+	\end{center}
+	\caption{耳カット識別のaccuracyの推移（各クラス39枚）\label{cutaccuracy}}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=7cm]{2021_01_15_cat_earcut_loss_batchsize_16_adam_lr0.001.png}
+	\end{center}
+	\caption{耳カット識別のlossの推移（各クラス39枚）\label{cutloss}}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=7cm]{2021_01_22_cat_earcut_accuracy_batchsize_16_adam_lr0.001.png}
+	\end{center}
+	\caption{耳カット識別のaccuracyの推移（各クラス110枚）\label{cutaccuracy2}}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=7cm]{2021_01_22_cat_earcut_loss_batchsize_16_adam_lr0.001.png}
+	\end{center}
+	\caption{耳カット識別のlossの推移（各クラス110枚）\label{cutloss2}}
+\end{figure}
+
+訓練枚数を増やすと識別率は多少上がった．
+
+
+\section{次回行うこと}
+\begin{itemize}
+	\item アノテーションの続き
+	\item 猫の耳を検出できるか実験
+\end{itemize}
+
+
+
+
+
+%\bibliography{index}
+\bibliographystyle{junsrt} %参考文献出力スタイル
+
+\end{document}
+
